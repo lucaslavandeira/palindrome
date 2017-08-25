@@ -1,2 +1,6 @@
 # Ejecutable
 tp0
+# Output de LaTeX
+informe.aux
+informe.log
+informe.pdf
