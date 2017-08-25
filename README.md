@@ -3,7 +3,7 @@ Trabajo Práctico 0 de la materia Organizacion de Computadoras, 2° C 2017, FIUB
 
 # Dependencias
 Para compilar el informe es necesario instalar los siguientes paquetes (Debian):
-- `texlive-base`
+- `texlive-latex-base`
 - `texlive-lang-spanish`
 
 # Compilación
