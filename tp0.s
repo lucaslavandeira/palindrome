@@ -463,6 +463,7 @@ arg_parse:
 	sw	$a0,64($fp)
 	sw	$a1,68($fp)
 	sw	$a2,72($fp)
+	sw	$a3,76($fp)
 	li	$v0,1			# 0x1
 	sw	$v0,24($fp)
 	addu	$v1,$fp,32
@@ -535,8 +536,9 @@ $L48:
 	la	$a1,help_str
 	la	$t9,printf
 	jal	$ra,$t9
-	lw	$v0,72($fp)
-	sw	$zero,0($v0)
+	lw	$v1,76($fp)
+	li	$v0,1			# 0x1
+	sw	$v0,0($v1)
 	b	$L42
 $L52:
 	lb	$v1,40($fp)
@@ -546,8 +548,9 @@ $L52:
 	la	$a1,$LC4
 	la	$t9,printf
 	jal	$ra,$t9
-	lw	$v0,72($fp)
-	sw	$zero,0($v0)
+	lw	$v1,76($fp)
+	li	$v0,1			# 0x1
+	sw	$v0,0($v1)
 	b	$L42
 $L53:
 	lb	$v0,40($fp)
@@ -638,16 +641,28 @@ main:
 	sw	$v0,24($fp)
 	lw	$v0,$LC8+4
 	sw	$v0,28($fp)
+	sw	$zero,32($fp)
+	addu	$v0,$fp,32
 	lw	$a0,56($fp)
 	lw	$a1,60($fp)
 	addu	$a2,$fp,24
+	move	$a3,$v0
 	la	$t9,arg_parse
 	jal	$ra,$t9
-	lw	$v0,24($fp)
-	bne	$v0,$zero,$L60
-	sw	$zero,32($fp)
+	lw	$v0,32($fp)
+	beq	$v0,$zero,$L60
+	sw	$zero,36($fp)
 	b	$L59
 $L60:
+	lw	$v0,24($fp)
+	beq	$v0,$zero,$L62
+	lw	$v0,28($fp)
+	bne	$v0,$zero,$L61
+$L62:
+	li	$v0,1			# 0x1
+	sw	$v0,36($fp)
+	b	$L59
+$L61:
 	la	$t9,chargeSpace
 	jal	$ra,$t9
 	lw	$a0,24($fp)
@@ -656,21 +671,21 @@ $L60:
 	jal	$ra,$t9
 	lw	$v1,24($fp)
 	la	$v0,__sF
-	beq	$v1,$v0,$L61
+	beq	$v1,$v0,$L63
 	lw	$a0,24($fp)
 	la	$t9,fclose
 	jal	$ra,$t9
-$L61:
+$L63:
 	lw	$v1,28($fp)
 	la	$v0,__sF+88
-	beq	$v1,$v0,$L62
+	beq	$v1,$v0,$L64
 	lw	$a0,28($fp)
 	la	$t9,fclose
 	jal	$ra,$t9
-$L62:
-	sw	$zero,32($fp)
+$L64:
+	sw	$zero,36($fp)
 $L59:
-	lw	$v0,32($fp)
+	lw	$v0,36($fp)
 	move	$sp,$fp
 	lw	$ra,48($sp)
 	lw	$fp,44($sp)
