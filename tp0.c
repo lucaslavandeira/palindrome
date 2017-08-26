@@ -159,11 +159,6 @@ int main(int argc, char** argv) {
     arg_parse(argc, argv, fdescriptors);
     if (!fdescriptors[0]) return 0;
 
-    // Print que muestra los fd para comprobar que los archivos pasados por
-    // parámetro se abrieron exitosamente
-    printf("Executing ... Files %d, %d\n",
-           fdescriptors[0]->_fileno, fdescriptors[1]->_fileno);
-
     chargeSpace();
     readFile(fdescriptors[0], fdescriptors[1]);
     if (fdescriptors[0] != stdin) fclose(fdescriptors[0]);
