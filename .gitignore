@@ -4,3 +4,7 @@ tp0
 informe.aux
 informe.log
 informe.pdf
+
+# Errores de pruebas
+test/error/*
+!test/error/.gitkeep

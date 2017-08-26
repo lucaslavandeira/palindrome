@@ -9,3 +9,6 @@ Para compilar el informe es necesario instalar los siguientes paquetes (Debian):
 # Compilación
 Correr `make`. Para generar el informe, correr `make informe`
 
+# Pruebas
+Correr `sh run_tests.sh` desde el directorio raíz
+
