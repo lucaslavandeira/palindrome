@@ -112,7 +112,7 @@ void readFile(FILE* archIn, FILE* archOut) {
 //------------------------------------------------------------------------------
 // Parsea los argumentos
 //------------------------------------------------------------------------------
-void arg_parse(int argc, char** argv, FILE** descriptors) {
+void arg_parse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
     int arg = 1;
     const char flags[] = {'i', 'o', 'V', 'h'};
     char flag = 0;
@@ -127,12 +127,12 @@ void arg_parse(int argc, char** argv, FILE** descriptors) {
 
             if (flag == 'h') {
                 printf("%s\n", help_str);
-                descriptors[0] = NULL;
+                *clean_exit = 1;
                 return;
             }
             if (flag == 'V') {
                 printf("tp0: version %s\n", VERSION);
-                descriptors[0] = NULL;
+                *clean_exit = 1;
                 return;
             }
             if (!flag) {
@@ -156,8 +156,10 @@ void arg_parse(int argc, char** argv, FILE** descriptors) {
 //------------------------------------------------------------------------------
 int main(int argc, char** argv) {
     FILE* fdescriptors[2] = {stdin, stdout};
-    arg_parse(argc, argv, fdescriptors);
-    if (!fdescriptors[0]) return 0;
+    int clean_exit = 0;
+    arg_parse(argc, argv, fdescriptors, &clean_exit);
+    if (clean_exit) return 0; // finalizacion limpia, cuando se usa -h o -V
+    if (!fdescriptors[0] || !fdescriptors[1]) return 1;
 
     chargeSpace();
     readFile(fdescriptors[0], fdescriptors[1]);
