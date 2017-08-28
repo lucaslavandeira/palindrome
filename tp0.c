@@ -118,7 +118,7 @@ void arg_parse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
     char flag = 0;
     while (arg < argc) {
         if (!flag && argv[arg][0] == '-') {
-            for (int i = 0; i < strlen(flags); i++) {
+            for (int i = 0; i < 4; i++) {
                 if (argv[arg][1] == flags[i]) {
                     flag = argv[arg][1];
                     break;
