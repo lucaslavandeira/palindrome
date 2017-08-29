@@ -3,7 +3,8 @@ tp0
 # Output de LaTeX
 informe.aux
 informe.log
-informe.pdf
+informe.out
+informe.toc
 
 # Errores de pruebas
 test/error/*
