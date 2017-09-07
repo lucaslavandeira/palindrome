@@ -9,7 +9,7 @@
 #define ERROR -1
 #define SUCCESS 0
 #define INITIAL 100
-#define VERSION "0.1"
+#define VERSION "0.2"
 const char help_str[] = "Usage:\n"
         "  tp0 -h\n"
         "  tp0 -V\n"
