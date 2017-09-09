@@ -215,6 +215,44 @@ int argParse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
     }
     return SUCCESS;
 }
+
+int stdin_capicua(const char* word, size_t len) {
+    size_t cur = 0;
+    while (cur < len) {
+        if (tolower(word[cur]) != tolower(word[len - cur - 1])) {
+            return false;
+        }
+        cur++;
+    }
+    return true;
+}
+
+// Función aparte para stdin, la optimización de memoria de fseek usada
+// en el caso anterior no es posible leyendo de stdin
+int read_stdin(FILE* out) {
+    size_t word_len = 1024;
+    char* word = (char*) malloc(word_len);
+    char c = (char) fgetc(stdin);
+    size_t cur = 0;
+    while (c != EOF) {
+        if (belongsToSpace(c)) {
+            if (cur == word_len) {
+                word_len *= 2;
+                word = (char*) realloc(word, word_len);
+            }
+            word[cur++] = c;
+        } else {
+            if (stdin_capicua(word, cur)) {
+                if (fprintf(out, "%s\n", word) < 0) return ERROR;
+            }
+            memset(word, 0, word_len);
+            cur = 0;
+        }
+        c = (char) fgetc(stdin);
+    }
+    return SUCCESS;
+}
+
 //------------------------------------------------------------------------------
 // MAIN
 //------------------------------------------------------------------------------
@@ -224,9 +262,19 @@ int main(int argc, char** argv) {
     if (argParse(argc, argv, fdescriptors, &clean_exit) == ERROR) return 1;
     if (clean_exit) return 0;  // finalizacion limpia, cuando se usa -h o -V
     chargeSpace();
-    if (readFile(fdescriptors[0], fdescriptors[1]) == ERROR) return 1;
-    if (fdescriptors[0] != stdin && fclose(fdescriptors[0]) == EOF) return 1;
-    if (fdescriptors[1] != stdout && fclose(fdescriptors[1]) == EOF) return 1;
+    if (fdescriptors[0] == stdin) {
+        if (read_stdin(fdescriptors[1])) {
+            if (fdescriptors[1] != stdout) {
+                fclose(fdescriptors[1]);
+            }
+            return ERROR;
+        }
+    } else {
+        if (readFile(fdescriptors[0], fdescriptors[1]) == ERROR) return ERROR;
+        if (fdescriptors[0] != stdin && fclose(fdescriptors[0]) == EOF) return ERROR;
+        if (fdescriptors[1] != stdout && fclose(fdescriptors[1]) == EOF) return ERROR;
+    }
+
     return 0;
 }
 //------------------------------------------------------------------------------
