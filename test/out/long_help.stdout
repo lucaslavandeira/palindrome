@@ -1,0 +1,12 @@
+Usage:
+  tp0 -h
+  tp0 -V
+  tp0 [options]
+Options:
+  -V, --version	Print version and quit.
+  -h, --help	Print this information.
+  -i, --input	Location of the input file.
+  -o, --output	Location of the output file.
+Examples:
+  tp0 -i ~/input -o
+

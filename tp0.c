@@ -6,9 +6,9 @@
 //------------------------------------------------------------------------------
 // DEFINITIONS
 //------------------------------------------------------------------------------
-#define ERROR -1
+#define ERROR 1
 #define SUCCESS 0
-#define VERSION "0.1"
+#define VERSION "0.2"
 const char help_str[] = "Usage:\n"
         "  tp0 -h\n"
         "  tp0 -V\n"
@@ -22,11 +22,10 @@ const char help_str[] = "Usage:\n"
         "  tp0 -i ~/input -o\n";
 #define SPACE_SIZE 65
 #define SPACE_INDEX 123
-#define EMPTY -1
+#define EMPTY (-1)
 const char ENTER = '\n';
 char space[SPACE_SIZE];
 int spaceIndex[SPACE_INDEX];
-#define NULL_STRING "EMPTY"
 //------------------------------------------------------------------------------
 // CHARGE SPACE
 //------------------------------------------------------------------------------
@@ -124,10 +123,15 @@ int capicua(FILE *archIn, long begin, long end, FILE *archOut) {
 // READ FILE
 //------------------------------------------------------------------------------
 int readFile(FILE* archIn, FILE* archOut) {
-    if (fseek(archIn, 0, SEEK_END) == ERROR) return ERROR;
-    if (ftell(archIn) == 0) return SUCCESS;
-    if (fseek(archIn, 0, SEEK_SET) == ERROR) return ERROR;
-    if (fseek(archOut, 0, SEEK_SET) == ERROR) return ERROR;
+    if (archIn != stdin) {
+        if (fseek(archIn, 0, SEEK_END) == ERROR) return ERROR;
+        if (ftell(archIn) == 0) return SUCCESS;
+        if (fseek(archIn, 0, SEEK_SET) == ERROR) return ERROR;
+    }
+
+    if (archOut != stdout) {
+        if (fseek(archOut, 0, SEEK_SET) == ERROR) return ERROR;
+    }
     long begin = ftell(archIn);
     long end = begin;
     long last;
@@ -168,11 +172,11 @@ int argParse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
                            "--input", "--output"};
 
     bool std;
-    char* flag = "nullStr";
+    char* flag = "";
     bool isFlagNull;
     while (arg < argc) {
-        isFlagNull = equal(flag, "nullStr");
-        if (isFlagNull && argv[arg][0] == '-') {
+        isFlagNull = true;
+        if (argv[arg][0] == '-') {
             for (int i = 0; i < size; i++) {
                 if (strcmp(argv[arg], flags[i]) == 0) {
                     flag = argv[arg];
@@ -181,7 +185,7 @@ int argParse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
                 }
             }
 
-            if (equal(flag, "-h") || equal(flag, "-help")) {
+            if (equal(flag, "-h") || equal(flag, "--help")) {
                 printf("%s\n", help_str);
                 *clean_exit = 1;
                 return SUCCESS;
@@ -192,9 +196,9 @@ int argParse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
                 return SUCCESS;
             }
             if (isFlagNull) {
-                printf("Invalid argument: %s", argv[arg]);
+                printf("Invalid argument: %s\n", argv[arg]);
                 descriptors[0] = NULL;
-                return SUCCESS;
+                return ERROR;
             }
         } else {
             std = equal(argv[arg], "-");

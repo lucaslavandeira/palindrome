@@ -20,10 +20,6 @@ for case in $(ls $IN); do
   filename=$(basename ${case%%.*}) 
   printf "Executing $filename... ";
   ./tp0 $(cat $IN/$case) >> stdout.tmp 
-  if [ $? -eq 1 ]; then
-      echo "ERROR opening input file"
-      continue
-  fi
   if [ -e run.out ]; then
     diff run.out $OUT/$filename.out >> tmp;
     if [ $? -ne 0 ]; then
