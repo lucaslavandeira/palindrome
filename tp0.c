@@ -237,6 +237,7 @@ int stdinCapicua(const char* word, size_t len) {
 int readStdin(FILE* out) {
     size_t word_len = 1024;
     char* word = (char*) malloc(sizeof(char) * word_len);
+    memset(word, 0, word_len);
     if (word == NULL) return ERROR;
     char c = (char) fgetc(stdin);
     size_t cur = 0;
