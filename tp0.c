@@ -8,8 +8,7 @@
 //------------------------------------------------------------------------------
 #define ERROR -1
 #define SUCCESS 0
-#define INITIAL 100
-#define VERSION "0.2"
+#define VERSION "0.1"
 const char help_str[] = "Usage:\n"
         "  tp0 -h\n"
         "  tp0 -V\n"
@@ -27,10 +26,7 @@ const char help_str[] = "Usage:\n"
 const char ENTER = '\n';
 char space[SPACE_SIZE];
 int spaceIndex[SPACE_INDEX];
-const char version[] = "--version";
-const char help[] = "--help";
-const char input[] = "--input";
-const char output[] = "--output";
+#define NULL_STRING "EMPTY"
 //------------------------------------------------------------------------------
 // CHARGE SPACE
 //------------------------------------------------------------------------------
@@ -156,45 +152,60 @@ int readFile(FILE* archIn, FILE* archOut) {
     return SUCCESS;
 }
 //------------------------------------------------------------------------------
+// EQUAL
+//------------------------------------------------------------------------------
+bool equal(const char* str1, const char* str2) {
+    // printf("str1: %s  - str2: %s\n", str1, str2);
+    return strcmp(str1, str2) == 0;
+}
+//------------------------------------------------------------------------------
 // ARG PARSE
 //------------------------------------------------------------------------------
-int arg_parse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
+int argParse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
     int arg = 1;
-    const char flags[] = {'i', 'o', 'V', 'h'};
-    char flag = 0;
+    const int size = 8;
+    const char* flags[] = {"-i", "-o", "-V", "-h", "--version", "--help",
+                           "--input", "--output"};
+
+    bool std;
+    char* flag = "nullStr";
+    bool isFlagNull;
     while (arg < argc) {
-        if (!flag && argv[arg][0] == '-') {
-            for (int i = 0; i < 4; i++) {
-                if (argv[arg][1] == flags[i]) {
-                    flag = argv[arg][1];
+        isFlagNull = equal(flag, "nullStr");
+        if (isFlagNull && argv[arg][0] == '-') {
+            for (int i = 0; i < size; i++) {
+                if (strcmp(argv[arg], flags[i]) == 0) {
+                    flag = argv[arg];
+                    isFlagNull = false;
                     break;
                 }
             }
 
-            if (flag == 'h') {
+            if (equal(flag, "-h") || equal(flag, "-help")) {
                 printf("%s\n", help_str);
                 *clean_exit = 1;
                 return SUCCESS;
             }
-            if (flag == 'V') {
+            if (equal(flag, "-V") || equal(flag, "--version")) {
                 printf("tp0: version %s\n", VERSION);
                 *clean_exit = 1;
                 return SUCCESS;
             }
-            if (!flag) {
+            if (isFlagNull) {
                 printf("Invalid argument: %s", argv[arg]);
                 descriptors[0] = NULL;
                 return SUCCESS;
             }
         } else {
-            if (flag == 'i') {
+            std = equal(argv[arg], "-");
+            if ((equal(flag, "-i") || equal(flag, "--input")) && !std) {
                 descriptors[0] = fopen(argv[arg], "r");
                 if (descriptors[0] == NULL) return ERROR;
-            } else if (flag == 'o') {
+            } else if ((equal(flag, "-o") || equal(flag, "--output")) && !std) {
                 descriptors[1] = fopen(argv[arg], "w");
                 if (descriptors[1] == NULL) return ERROR;
             }
-            flag = 0;
+            flag = "nullStr";
         }
         arg++;
     }
@@ -206,16 +217,12 @@ int arg_parse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
 int main(int argc, char** argv) {
     FILE* fdescriptors[2] = {stdin, stdout};
     int clean_exit = 0;
-    if (arg_parse(argc, argv, fdescriptors, &clean_exit) == ERROR) return 1;
+    if (argParse(argc, argv, fdescriptors, &clean_exit) == ERROR) return 1;
     if (clean_exit) return 0;  // finalizacion limpia, cuando se usa -h o -V
     chargeSpace();
     if (readFile(fdescriptors[0], fdescriptors[1]) == ERROR) return 1;
-    if (fdescriptors[0] != stdin) {
-        if (fclose(fdescriptors[0]) == EOF) return 1;
-    }
-    if (fdescriptors[1] != stdout) {
-        if (fclose(fdescriptors[1]) == EOF) return 1;
-    }
+    if (fdescriptors[0] != stdin && fclose(fdescriptors[0]) == EOF) return 1;
+    if (fdescriptors[1] != stdout && fclose(fdescriptors[1]) == EOF) return 1;
     return 0;
 }
 //------------------------------------------------------------------------------
