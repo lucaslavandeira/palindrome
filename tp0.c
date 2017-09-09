@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <signal.h>
 //------------------------------------------------------------------------------
 // DEFINITIONS
 //------------------------------------------------------------------------------
@@ -215,8 +216,10 @@ int argParse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
     }
     return SUCCESS;
 }
-
-int stdin_capicua(const char* word, size_t len) {
+//------------------------------------------------------------------------------
+// STDIN CAPICUA
+//------------------------------------------------------------------------------
+int stdinCapicua(const char* word, size_t len) {
     size_t cur = 0;
     while (cur < len) {
         if (tolower(word[cur]) != tolower(word[len - cur - 1])) {
@@ -226,33 +229,40 @@ int stdin_capicua(const char* word, size_t len) {
     }
     return true;
 }
-
+//------------------------------------------------------------------------------
+// READ STDIN
+//------------------------------------------------------------------------------
 // Función aparte para stdin, la optimización de memoria de fseek usada
 // en el caso anterior no es posible leyendo de stdin
-int read_stdin(FILE* out) {
+int readStdin(FILE* out) {
     size_t word_len = 1024;
-    char* word = (char*) malloc(word_len);
+    char* word = (char*) malloc(sizeof(char) * word_len);
+    if (word == NULL) return ERROR;
     char c = (char) fgetc(stdin);
     size_t cur = 0;
     while (c != EOF) {
         if (belongsToSpace(c)) {
-            if (cur == word_len) {
+            if (cur >= word_len) {
                 word_len *= 2;
+                printf("ACA\n");
                 word = (char*) realloc(word, word_len);
             }
             word[cur++] = c;
         } else {
-            if (stdin_capicua(word, cur)) {
-                if (fprintf(out, "%s\n", word) < 0) return ERROR;
+            if (stdinCapicua(word, cur)) {
+                if (fprintf(out, "%s\n", word) < 0) {
+                    free(word);
+                    return ERROR;
+                }
             }
             memset(word, 0, word_len);
             cur = 0;
         }
         c = (char) fgetc(stdin);
     }
+    free(word);
     return SUCCESS;
 }
-
 //------------------------------------------------------------------------------
 // MAIN
 //------------------------------------------------------------------------------
@@ -263,18 +273,12 @@ int main(int argc, char** argv) {
     if (clean_exit) return 0;  // finalizacion limpia, cuando se usa -h o -V
     chargeSpace();
     if (fdescriptors[0] == stdin) {
-        if (read_stdin(fdescriptors[1])) {
-            if (fdescriptors[1] != stdout) {
-                fclose(fdescriptors[1]);
-            }
-            return ERROR;
-        }
+        if (readStdin(fdescriptors[1]) == ERROR) return 1;
     } else {
-        if (readFile(fdescriptors[0], fdescriptors[1]) == ERROR) return ERROR;
-        if (fdescriptors[0] != stdin && fclose(fdescriptors[0]) == EOF) return ERROR;
-        if (fdescriptors[1] != stdout && fclose(fdescriptors[1]) == EOF) return ERROR;
+        if (readFile(fdescriptors[0], fdescriptors[1]) == ERROR) return 1;
+        if (fclose(fdescriptors[0]) == EOF) return 1;
     }
-
+    if (fdescriptors[1] != stdout && fclose(fdescriptors[1]) == EOF) return 1;
     return 0;
 }
 //------------------------------------------------------------------------------
