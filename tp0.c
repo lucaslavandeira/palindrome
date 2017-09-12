@@ -154,13 +154,16 @@ int readFile(FILE* archIn, FILE* archOut) {
         }
         c = getc(archIn);
     }
+    long actualPos = ftell(archIn);
+    if (fseek(archIn, 0, SEEK_END) == ERROR) return ERROR;
+    long finalPos = ftell(archIn);
+    if (actualPos != finalPos) return ERROR;
     return SUCCESS;
 }
 //------------------------------------------------------------------------------
 // EQUAL
 //------------------------------------------------------------------------------
 bool equal(const char* str1, const char* str2) {
-    // printf("str1: %s  - str2: %s\n", str1, str2);
     return strcmp(str1, str2) == 0;
 }
 //------------------------------------------------------------------------------
