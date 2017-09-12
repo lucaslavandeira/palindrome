@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{fancyvrb}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -60,6 +61,9 @@
       
 \newpage
     \pagenumbering{arabic}
+    \tableofcontents
+
+\newpage
 
     \section{Introducción}
 El objetivo de este trabajo práctico familiarizarse con las herramientas de software que usaremos en los siguientes trabajos, implementando un programa para procesar archivos
@@ -93,6 +97,256 @@ El funcionamiento correcto del proyecto se sometió a prueba haciendo uso de var
 
     \section{Problemas encontrados}
 El desarrollo del programa no tuvo mayores inconvenientes, teniendo todos los integrantes experiencia programando en C. Como en todo proyecto, se debe explorar algunas tecnologías en las que uno mismo no está familiarizado, y se tuvo que dedicar un tiempo sustancial al estudio de \textit{bash}, y \LaTeX. La compilación del programa no es ejecutado con la mayor rigurosidad de advertencias debido a la detección de algunas cuando se compila en la plataforma MIPS. Sin embargo, el programa resulta funcionar de la misma manera: todos los casos de prueba pasan correctamente.
+
+  \section{Correcciones realizadas}
+  En esta segunda entrega del trabajo Práctico se soportan la entrada de palabras tan grandes como el archivo que se lee, o si proviene de la entrada estándar se soporta una palabra tan grande como la memoria lo permita.
+  Además se definió, que dado el caso de si por alguna razón externa al programa, las funciones de la librería de C dan algún error, se finaliza el programa retornando el valor 1.
+    \section{Casos de prueba}
+Se realizaron para el trabajo práctico 6 casos de pruebas distintos para verificar el correcto funcionamiento del código.\\
+Para correr las pruebas se creó un archivo \texttt{run\char`_tests.sh}, el cual corre todas las pruebas del directorio "test" (el mismo se lo puede encontrar el git, o en el pendrive del tp).\\
+A continuación se presentan las pruebas realizadas:\\
+
+Prueba: "\texttt{help.in}" \\
+    Argumentos de entrada: -h\\
+    La salida esperada en "help.out": (vacío)\\
+    La salida esperada en "help.stdout":
+        \begin{Verbatim}
+Usage:
+  tp0 -h
+  tp0 -V
+  tp0 [options]
+Options:
+  -V, --version Print version and quit.
+  -h, --help    Print this information.
+  -i, --input   Location of the input file.
+  -o, --output  Location of the output file.
+Examples:
+  tp0 -i ~/input -o
+  \end{Verbatim}
+      
+Prueba: "\texttt{invalid\char`_arg.in}" \\
+    Argumentos de entrada: -invalid\\
+    La salida esperada en "help.out": (vacío)\\
+    La salida esperada en "help.stdout":
+        \begin{Verbatim}
+Invalid argument: -invalid
+  \end{Verbatim}
+  
+  Prueba: "\texttt{long\char`_help.in}" \\
+    Argumentos de entrada: --help\\
+    La salida esperada en "\texttt{long\char`_help.out}": (vacío)\\
+    La salida esperada en "\texttt{long\char`_help.stdout}":
+        \begin{Verbatim}
+Usage:
+  tp0 -h
+  tp0 -V
+  tp0 [options]
+Options:
+  -V, --version Print version and quit.
+  -h, --help    Print this information.
+  -i, --input   Location of the input file.
+  -o, --output  Location of the output file.
+Examples:
+  tp0 -i ~/input -o
+  \end{Verbatim}
+  
+    Prueba: "\texttt{long\char`_palindrome.in}" \\
+    Argumentos de entrada: \texttt{-i test/long\char`_palindrome.txt -o run.out}\\
+    Archivo \texttt{test/long\char`_palindrome.txt}: \\
+    \begin{Verbatim}
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    \end{Verbatim}
+    La salida esperada en "\texttt{long\char`_palindrome.out}": El mismo archivo\\
+    La salida esperada en "\texttt{long\char`_palindrome.stdout}": (vacío)\\
+  
+      Prueba: "\texttt{long\char`_params.in}" \\
+    Argumentos de entrada: \texttt{--input test/single\char`_character.txt --output run.out}\\
+    Archivo \texttt{test/single\char`_character.txt}: \\
+    \begin{Verbatim}
+    A
+    \end{Verbatim}
+    La salida esperada en "\texttt{long\char`_palindrome.out}": A\\
+    La salida esperada en "\texttt{long\char`_palindrome.stdout}": (vacío)\\
+  
+        Prueba: "\texttt{long\char`_version.in}" \\
+    Argumentos de entrada: \texttt{--version}\\
+    Archivo \texttt{test/single\char`_character.txt}: \\
+
+    La salida esperada en "\texttt{long\char`_palindrome.out}": (vacío)\\
+    La salida esperada en "\texttt{long\char`_palindrome.stdout}": \\
+    \begin{Verbatim}
+    tp0: version 0.2
+    \end{Verbatim}
+  
+    Prueba: "\texttt{multiple\char`_palindrome.in}" \\
+    Argumentos de entrada: \texttt{-i test/multiple\char`_palindrome.txt -o run.out}\\
+    Archivo \texttt{test/multiple\char`_palindrome.txt}: \\
+    \begin{Verbatim}
+    Somos los primeros en completar el TP 0.
+    Ojo que La fecha de entrega del TP0 es el martes 12 de septiembre.
+    \end{Verbatim}
+    La salida esperada en "\texttt{multiple\char`_palindrome.out}":\\
+        \begin{Verbatim}
+    Somos
+    0
+    Ojo
+    \end{Verbatim}
+    La salida esperada en "\texttt{multiple\char`_palindrome.stdout}": (vacío)\\
+  
+    Prueba: "\texttt{no\char`_palindrome.in}" \\
+    Argumentos de entrada: \texttt{-i test/no\char`_palindrome.txt -o run.out}\\
+    Archivo \texttt{test/no\char`_palindrome.txt}: \\
+    \begin{Verbatim}
+    Somos los primeros en completar el TP 0.
+    Ojo que La fecha de entrega del TP0 es el martes 12 de septiembre.
+    \end{Verbatim}
+    La salida esperada en "\texttt{no\char`_palindrome.out}":\\
+        \begin{Verbatim}
+    Somos
+    0
+    Ojo
+    \end{Verbatim}
+    La salida esperada en "\texttt{no\char`_palindrome.stdout}": (vacío)\\
+    
+    
+    Prueba: "\texttt{single\char`_character.in}" \\
+    Argumentos de entrada: \texttt{-i test/single\char`_character.txt -o run.out}\\
+    Archivo \texttt{test/single\char`_character.txt}: \\
+    \begin{Verbatim}
+    A
+    \end{Verbatim}
+    La salida esperada en "\texttt{single\char`_character.out}":\\
+        \begin{Verbatim}
+    A
+    \end{Verbatim}
+    La salida esperada en "\texttt{single\char`_character.stdout}": (vacío)\\
+    
+    
+    Prueba: "\texttt{underscores.in}" \\
+    Argumentos de entrada: \texttt{-i test/underscores.txt -o run.out}\\
+    Archivo \texttt{test/underscores.txt}: \\
+    \begin{Verbatim}
+    _a_ -a- a-b_c_b-a
+    \end{Verbatim}
+    La salida esperada en "\texttt{underscores.out}":\\
+        \begin{Verbatim}
+    _a_
+    -a-
+    a-b_c_b-a
+    \end{Verbatim}
+    La salida esperada en "\texttt{underscores.stdout}": (vacío)\\
+    
+        Prueba: "\texttt{numeric.in}" \\
+    Argumentos de entrada: \texttt{-i test/numeric.txt -o run.out}\\
+    Archivo \texttt{test/numeric.txt}: \\
+    \begin{Verbatim}
+    1
+    9009
+    12
+    000000000000
+    \end{Verbatim}
+    La salida esperada en "\texttt{numeric.out}":\\
+        \begin{Verbatim}
+    1
+    9009
+    000000000000
+    \end{Verbatim}
+    La salida esperada en "\texttt{numeric.stdout}": (vacío)\\
+    
+        Prueba: "\texttt{use\char`_stdout.in}" \\
+    Argumentos de entrada: \texttt{-i test/multiple\char`_palindrome.txt -o run.out}\\
+    Archivo \texttt{test/multiple\char`_palindrome.txt}: \\
+    \begin{Verbatim}
+    Somos los primeros en completar el TP 0.
+    Ojo que La fecha de entrega del TP0 es el martes 12 de septiembre.
+    \end{Verbatim}
+    La salida esperada en "\texttt{numeric.out}": (vacío)\\
+
+    La salida esperada en "\texttt{numeric.stdout}": \\
+            \begin{Verbatim}
+    Somos
+    0
+    Ojo
+    \end{Verbatim}
+    
+       Prueba: "\texttt{version.in}" \\
+    Argumentos de entrada: \texttt{-V}\\
+    
+    La salida esperada en "\texttt{numeric.out}": (vacío)\\
+
+    La salida esperada en "\texttt{numeric.stdout}": \\
+    \begin{Verbatim}
+    tp0: version 0.2
+    \end{Verbatim}
+    
+    \section{Archivo \texttt{run\char`_tests.sh}}
+    \begin{lstlisting}
+    #!/bin/bash
+
+TEST_DIR=test/
+IN=$TEST_DIR/in/
+OUT=$TEST_DIR/out/
+ERROR=$TEST_DIR/error/
+
+for case in $(ls $ERROR); do
+    rm $ERROR/$case
+done
+
+for case in $(ls $IN); do
+  ERRORS=false
+  if [ -e run.out ]; then 
+      rm run.out
+  fi
+  if [ -e stdout.tmp ]; then
+      rm stdout.tmp
+  fi
+  filename=$(basename ${case%%.*}) 
+  printf "Executing $filename... ";
+  ./tp0 $(cat $IN/$case) >> stdout.tmp 
+  if [ -e run.out ]; then
+    diff run.out $OUT/$filename.out >> tmp;
+    if [ $? -ne 0 ]; then
+      ERRORS=true
+    fi
+  fi
+  diff stdout.tmp $OUT/$filename.stdout >> tmp;
+  if [ $? -eq 0 ]; then
+    echo "OK"
+  else
+     ERRORS=true
+  fi
+  
+  if $ERRORS; then
+    echo "ERROR"
+    cat tmp
+    cp stdout.tmp $ERROR/$filename.error.stdout
+    if [ -e run.out ]; then
+      cp run.out $ERROR/$filename.error
+    fi
+  fi    
+done
+
+if [ -e tmp ]; then
+    rm tmp
+fi
+if [ -e stdout.tmp ]; then
+    rm stdout.tmp
+fi
+    \end{lstlisting}
+  
     \newpage
    
      \section{Anexo A: Código C}
@@ -101,10 +355,14 @@ El desarrollo del programa no tuvo mayores inconvenientes, teniendo todos los in
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
-//----------------------------------------------------------------------------
+#include <stdlib.h>
+#include <signal.h>
+//-------------------------------------------------------------------
 // DEFINITIONS
-//----------------------------------------------------------------------------
-#define VERSION "0.1"
+//-------------------------------------------------------------------
+#define ERROR 1
+#define SUCCESS 0
+#define VERSION "0.2"
 const char help_str[] = "Usage:\n"
         "  tp0 -h\n"
         "  tp0 -V\n"
@@ -118,13 +376,13 @@ const char help_str[] = "Usage:\n"
         "  tp0 -i ~/input -o\n";
 #define SPACE_SIZE 65
 #define SPACE_INDEX 123
-#define EMPTY -1
-const char* ENTER = "\n";
+#define EMPTY (-1)
+const char ENTER = '\n';
 char space[SPACE_SIZE];
 int spaceIndex[SPACE_INDEX];
-//----------------------------------------------------------------------------
+//-------------------------------------------------------------------
 // CHARGE SPACE
-//----------------------------------------------------------------------------
+//-------------------------------------------------------------------
 // Del 97 al 122 estan las letras de a-z
 // Del 65 al 90 estan las letras de A-Z
 // Del 48 al 57 estan los numeros de 0-9
@@ -133,140 +391,255 @@ int spaceIndex[SPACE_INDEX];
 void chargeSpace() {
     int pos = 0;
     for (int i = 0; i < SPACE_INDEX; i++) spaceIndex[i] = EMPTY;
-    //------------------------------------------------------------------------
+    //---------------------------------------------------------------
     for (int i = 97; i <= 122; i++) {
         space[pos] = (char)i;
         spaceIndex[i] = pos;
         pos++;
     }
-    //------------------------------------------------------------------------
+    //---------------------------------------------------------------
     for (int i = 65; i <= 90; i++) {
         space[pos] = (char)i;
         spaceIndex[i] = pos;
         pos++;
     }
-    //------------------------------------------------------------------------
+    //---------------------------------------------------------------
     for (int i = 48; i <= 57; i++) {
         space[pos] = (char)i;
         spaceIndex[i] = pos;
         pos++;
     }
-    //------------------------------------------------------------------------
+    //---------------------------------------------------------------
     // incluyo el guion medio
     pos++;
     space[pos] = '-';
     spaceIndex[45] = pos;
-    //------------------------------------------------------------------------
+    //----------------------------------------------------------------
     // incluyo el guion bajo
     pos++;
     space[pos] = '_';
     spaceIndex[95] = pos;
 }
-//----------------------------------------------------------------------------
+//--------------------------------------------------------------------
 // BELONGS TO SPACE
-//----------------------------------------------------------------------------
+//--------------------------------------------------------------------
 bool belongsToSpace(int aChar) {
     if (aChar >= SPACE_INDEX) return false;
     return spaceIndex[aChar] != EMPTY;
 }
-//----------------------------------------------------------------------------
-// IS CAPICUA
-//----------------------------------------------------------------------------
-bool isCapicua(char* word, size_t size) {
-    if (size == 0) return false;
-    if (size == 1) return true;
-    size_t rightPos = 0, leftPos = size-1;
-    while (rightPos < leftPos) {
-        int a = tolower(word[rightPos]);
-        int b = tolower(word[leftPos]);
-        if (a != b) return false;
-        rightPos++;
-        leftPos--;
+//--------------------------------------------------------------------
+// WRITE OUT FILE
+//---------------------------------------------------------------------
+int writeOutFile(FILE* archIn, long begin, long end, FILE* archOut) {
+    int c;
+    if (fseek(archIn, begin, SEEK_SET) < 0) return ERROR;
+    for (long i = 0; i < (end - begin); i++) {
+        if (fread((char*)(&c), sizeof(char), 1, archIn) <= 0) return ERROR;
+        if (fwrite((char*)(&c), sizeof(char), 1, archOut) <= 0) return ERROR;
     }
-    return true;
+    if (fwrite((char*)(&ENTER), sizeof(char), 1, archOut) <= 0) return ERROR;
+    return SUCCESS;
 }
-//----------------------------------------------------------------------------
+//---------------------------------------------------------------------
+// READ LETTER
+//--------------------------------------------------------------------
+int readLetter(FILE* arch, long pos, char* letter) {
+    if (fseek(arch, pos, SEEK_SET) == ERROR) return ERROR;
+    if (fread(letter, sizeof(char), 1, arch) <= 0) return ERROR;
+    return SUCCESS;
+}
+//--------------------------------------------------------------------
+// CAPICUA
+//---------------------------------------------------------------------
+int capicua(FILE *archIn, long begin, long end, FILE *archOut) {
+    char letterA, letterB;
+    bool isCapicua = true;
+    long size = (end - begin);
+    long leftPos = begin, rightPos = end-1;
+    if (size == 0) return SUCCESS;
+    while (leftPos <= rightPos) {
+        if (readLetter(archIn, leftPos, &letterA) == ERROR) return ERROR;
+        if (readLetter(archIn, rightPos, &letterB) == ERROR) return ERROR;
+        int a = tolower(letterA);
+        int b = tolower(letterB);
+        if (a != b) {
+            isCapicua = false;
+            break;
+        }
+        rightPos--;
+        leftPos++;
+    }
+    if (!isCapicua) return SUCCESS;
+    if (writeOutFile(archIn, begin, end, archOut) == ERROR) return ERROR;
+    return SUCCESS;
+}
+//--------------------------------------------------------------------
 // READ FILE
-//----------------------------------------------------------------------------
-void readFile(FILE* archIn, FILE* archOut) {
-    fseek(archIn, 0, SEEK_SET);
-    fseek(archOut, 0, SEEK_SET);
+//--------------------------------------------------------------------
+int readFile(FILE* archIn, FILE* archOut) {
+    if (archIn != stdin) {
+        if (fseek(archIn, 0, SEEK_END) == ERROR) return ERROR;
+        if (ftell(archIn) == 0) return SUCCESS;
+        if (fseek(archIn, 0, SEEK_SET) == ERROR) return ERROR;
+    }
+
+    if (archOut != stdout) {
+        if (fseek(archOut, 0, SEEK_SET) == ERROR) return ERROR;
+    }
+    long begin = ftell(archIn);
+    long end = begin;
+    long last;
     int c = getc(archIn);
-    size_t size = 0;
-    char word[100];
+    bool first = false;
     while (c != EOF) {
         if (belongsToSpace(c)) {
-            word[size] = (char)c;
-            size++;
-        } else {
-            if (isCapicua(word, size)) {
-                fwrite(word, sizeof(char)*size, 1, archOut);
-                fwrite(ENTER, sizeof(char)*1, 1, archOut);
+            if (!first) {
+                first = true;
+                begin = ftell(archIn) - 1;
             }
-            size = 0;
+            end = ftell(archIn);
+        } else {
+            first = false;
+            last = ftell(archIn);
+            if (capicua(archIn, begin, end, archOut) == ERROR) return ERROR;
+            begin = end;
+            if (fseek(archIn, last, SEEK_SET) == ERROR) return ERROR;
         }
         c = getc(archIn);
     }
+    long actualPos = ftell(archIn);
+    if (fseek(archIn, 0, SEEK_END) == ERROR) return ERROR;
+    long finalPos = ftell(archIn);
+    if (actualPos != finalPos) return ERROR;
+    return SUCCESS;
 }
-//----------------------------------------------------------------------------
-// Parsea los argumentos
-//----------------------------------------------------------------------------
-void arg_parse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
+//--------------------------------------------------------------------
+// EQUAL
+//---------------------------------------------------------------------
+bool equal(const char* str1, const char* str2) {
+    return strcmp(str1, str2) == 0;
+}
+//--------------------------------------------------------------------
+// ARG PARSE
+//--------------------------------------------------------------------
+int argParse(int argc, char** argv, FILE** descriptors, int* clean_exit) {
     int arg = 1;
-    const char flags[] = {'i', 'o', 'V', 'h'};
-    char flag = 0;
+    const int size = 8;
+    const char* flags[] = {"-i", "-o", "-V", "-h", "--version", "--help",
+                           "--input", "--output"};
+
+    bool std;
+    char* flag = "";
+    bool isFlagNull;
     while (arg < argc) {
-        if (!flag && argv[arg][0] == '-') {
-            for (int i = 0; i < strlen(flags); i++) {
-                if (argv[arg][1] == flags[i]) {
-                    flag = argv[arg][1];
+        isFlagNull = true;
+        if (argv[arg][0] == '-') {
+            for (int i = 0; i < size; i++) {
+                if (strcmp(argv[arg], flags[i]) == 0) {
+                    flag = argv[arg];
+                    isFlagNull = false;
                     break;
                 }
             }
 
-            if (flag == 'h') {
+            if (equal(flag, "-h") || equal(flag, "--help")) {
                 printf("%s\n", help_str);
                 *clean_exit = 1;
-                return;
+                return SUCCESS;
             }
-            if (flag == 'V') {
+            if (equal(flag, "-V") || equal(flag, "--version")) {
                 printf("tp0: version %s\n", VERSION);
                 *clean_exit = 1;
-                return;
+                return SUCCESS;
             }
-            if (!flag) {
-                printf("Invalid argument: %s", argv[arg]);
+            if (isFlagNull) {
+                printf("Invalid argument: %s\n", argv[arg]);
                 descriptors[0] = NULL;
-                return;
+                return ERROR;
             }
         } else {
-            if (flag == 'i') {
+            std = equal(argv[arg], "-");
+            if ((equal(flag, "-i") || equal(flag, "--input")) && !std) {
                 descriptors[0] = fopen(argv[arg], "r");
-            } else if (flag == 'o') {
+                if (descriptors[0] == NULL) return ERROR;
+            } else if ((equal(flag, "-o") || equal(flag, "--output")) && !std) {
                 descriptors[1] = fopen(argv[arg], "w");
+                if (descriptors[1] == NULL) return ERROR;
             }
-            flag = 0;
+            flag = "nullStr";
         }
         arg++;
     }
+    return SUCCESS;
 }
-//----------------------------------------------------------------------------
+//-----------------------------------------------------------------
+// STDIN CAPICUA
+//-----------------------------------------------------------------
+int stdinCapicua(const char* word, size_t len) {
+    size_t cur = 0;
+    while (cur < len) {
+        if (tolower(word[cur]) != tolower(word[len - cur - 1])) {
+            return false;
+        }
+        cur++;
+    }
+    return true;
+}
+//------------------------------------------------------------------
+// READ STDIN
+//---------------------------------------------------------------------
+// Función aparte para stdin, la optimización de memoria de fseek usada
+// en el caso anterior no es posible leyendo de stdin
+int readStdin(FILE* out) {
+    size_t word_len = 1024;
+    char* word = (char*) malloc(sizeof(char) * word_len);
+    memset(word, 0, word_len);
+    if (word == NULL) return ERROR;
+    char c = (char) fgetc(stdin);
+    size_t cur = 0;
+    while (c != EOF) {
+        if (belongsToSpace(c)) {
+            if (cur >= word_len) {
+                word_len *= 2;
+                printf("ACA\n");
+                word = (char*) realloc(word, word_len);
+            }
+            word[cur++] = c;
+        } else {
+            if (stdinCapicua(word, cur)) {
+                if (fprintf(out, "%s\n", word) < 0) {
+                    free(word);
+                    return ERROR;
+                }
+            }
+            memset(word, 0, word_len);
+            cur = 0;
+        }
+        c = (char) fgetc(stdin);
+    }
+    free(word);
+    return SUCCESS;
+}
+//---------------------------------------------------------------------
 // MAIN
-//----------------------------------------------------------------------------
+//--------------------------------------------------------------------
 int main(int argc, char** argv) {
     FILE* fdescriptors[2] = {stdin, stdout};
     int clean_exit = 0;
-    arg_parse(argc, argv, fdescriptors, &clean_exit);
-    if (clean_exit) return 0; // finalizacion limpia
-    if (!fdescriptors[0] || !fdescriptors[1]) return 1;
-
+    if (argParse(argc, argv, fdescriptors, &clean_exit) == ERROR) return 1;
+    if (clean_exit) return 0;  // finalizacion limpia, cuando se usa -h o -V
     chargeSpace();
-    readFile(fdescriptors[0], fdescriptors[1]);
-    if (fdescriptors[0] != stdin) fclose(fdescriptors[0]);
-    if (fdescriptors[1] != stdout) fclose(fdescriptors[1]);
+    if (fdescriptors[0] == stdin) {
+        if (readStdin(fdescriptors[1]) == ERROR) return 1;
+    } else {
+        if (readFile(fdescriptors[0], fdescriptors[1]) == ERROR) return 1;
+        if (fclose(fdescriptors[0]) == EOF) return 1;
+    }
+    if (fdescriptors[1] != stdout && fclose(fdescriptors[1]) == EOF) return 1;
     return 0;
 }
-//------------------------------------------------------------------------------
+//--------------------------------------------------------------------
+
 \end{lstlisting}
     \newpage
     
@@ -277,7 +650,7 @@ Este código fue generado compilando el programa en la plataforma MIPS con los s
 
 Los parámetros \texttt{o0} y \texttt{mrnames} hacen que el código producido no tenga optimizaciones algunas, y reemplaza los nombres de los registros numéricos por los nombres convencionales usados en manuales de la arquitectura, respectivamente.
 \begin{lstlisting}
-    .file   1 "tp0.c"
+        .file   1 "tp0.c"
     .section .mdebug.abi32
     .previous
     .abicalls
@@ -298,16 +671,11 @@ help_str:
     .ascii  "  -o, --output\tLocation of the output file.\n"
     .ascii  "Examples:\n"
     .ascii  "  tp0 -i ~/input -o\n\000"
-    .align  2
-$LC0:
-    .ascii  "\n\000"
     .globl  ENTER
-    .data
-    .align  2
     .type   ENTER, @object
-    .size   ENTER, 4
+    .size   ENTER, 1
 ENTER:
-    .word   $LC0
+    .byte   10
     .text
     .align  2
     .globl  chargeSpace
@@ -326,12 +694,12 @@ chargeSpace:
     move    $fp,$sp
     sw  $zero,8($fp)
     sw  $zero,12($fp)
-$L6:
+$L18:
     lw  $v0,12($fp)
     slt $v0,$v0,123
-    bne $v0,$zero,$L9
-    b   $L7
-$L9:
+    bne $v0,$zero,$L21
+    b   $L19
+$L21:
     lw  $v0,12($fp)
     sll $v1,$v0,2
     la  $v0,spaceIndex
@@ -341,89 +709,89 @@ $L9:
     lw  $v0,12($fp)
     addu    $v0,$v0,1
     sw  $v0,12($fp)
-    b   $L6
-$L7:
-    li  $v0,97          # 0x61
-    sw  $v0,12($fp)
-$L10:
-    lw  $v0,12($fp)
-    slt $v0,$v0,123
-    bne $v0,$zero,$L13
-    b   $L11
-$L13:
-    lw  $v1,8($fp)
-    la  $v0,space
-    addu    $v1,$v1,$v0
-    lbu $v0,12($fp)
-    sb  $v0,0($v1)
-    lw  $v0,12($fp)
-    sll $v1,$v0,2
-    la  $v0,spaceIndex
-    addu    $v1,$v1,$v0
-    lw  $v0,8($fp)
-    sw  $v0,0($v1)
-    lw  $v0,8($fp)
-    addu    $v0,$v0,1
-    sw  $v0,8($fp)
-    lw  $v0,12($fp)
-    addu    $v0,$v0,1
-    sw  $v0,12($fp)
-    b   $L10
-$L11:
-    li  $v0,65          # 0x41
-    sw  $v0,12($fp)
-$L14:
-    lw  $v0,12($fp)
-    slt $v0,$v0,91
-    bne $v0,$zero,$L17
-    b   $L15
-$L17:
-    lw  $v1,8($fp)
-    la  $v0,space
-    addu    $v1,$v1,$v0
-    lbu $v0,12($fp)
-    sb  $v0,0($v1)
-    lw  $v0,12($fp)
-    sll $v1,$v0,2
-    la  $v0,spaceIndex
-    addu    $v1,$v1,$v0
-    lw  $v0,8($fp)
-    sw  $v0,0($v1)
-    lw  $v0,8($fp)
-    addu    $v0,$v0,1
-    sw  $v0,8($fp)
-    lw  $v0,12($fp)
-    addu    $v0,$v0,1
-    sw  $v0,12($fp)
-    b   $L14
-$L15:
-    li  $v0,48          # 0x30
-    sw  $v0,12($fp)
-$L18:
-    lw  $v0,12($fp)
-    slt $v0,$v0,58
-    bne $v0,$zero,$L21
-    b   $L19
-$L21:
-    lw  $v1,8($fp)
-    la  $v0,space
-    addu    $v1,$v1,$v0
-    lbu $v0,12($fp)
-    sb  $v0,0($v1)
-    lw  $v0,12($fp)
-    sll $v1,$v0,2
-    la  $v0,spaceIndex
-    addu    $v1,$v1,$v0
-    lw  $v0,8($fp)
-    sw  $v0,0($v1)
-    lw  $v0,8($fp)
-    addu    $v0,$v0,1
-    sw  $v0,8($fp)
-    lw  $v0,12($fp)
-    addu    $v0,$v0,1
-    sw  $v0,12($fp)
     b   $L18
 $L19:
+    li  $v0,97          # 0x61
+    sw  $v0,12($fp)
+$L22:
+    lw  $v0,12($fp)
+    slt $v0,$v0,123
+    bne $v0,$zero,$L25
+    b   $L23
+$L25:
+    lw  $v1,8($fp)
+    la  $v0,space
+    addu    $v1,$v1,$v0
+    lbu $v0,12($fp)
+    sb  $v0,0($v1)
+    lw  $v0,12($fp)
+    sll $v1,$v0,2
+    la  $v0,spaceIndex
+    addu    $v1,$v1,$v0
+    lw  $v0,8($fp)
+    sw  $v0,0($v1)
+    lw  $v0,8($fp)
+    addu    $v0,$v0,1
+    sw  $v0,8($fp)
+    lw  $v0,12($fp)
+    addu    $v0,$v0,1
+    sw  $v0,12($fp)
+    b   $L22
+$L23:
+    li  $v0,65          # 0x41
+    sw  $v0,12($fp)
+$L26:
+    lw  $v0,12($fp)
+    slt $v0,$v0,91
+    bne $v0,$zero,$L29
+    b   $L27
+$L29:
+    lw  $v1,8($fp)
+    la  $v0,space
+    addu    $v1,$v1,$v0
+    lbu $v0,12($fp)
+    sb  $v0,0($v1)
+    lw  $v0,12($fp)
+    sll $v1,$v0,2
+    la  $v0,spaceIndex
+    addu    $v1,$v1,$v0
+    lw  $v0,8($fp)
+    sw  $v0,0($v1)
+    lw  $v0,8($fp)
+    addu    $v0,$v0,1
+    sw  $v0,8($fp)
+    lw  $v0,12($fp)
+    addu    $v0,$v0,1
+    sw  $v0,12($fp)
+    b   $L26
+$L27:
+    li  $v0,48          # 0x30
+    sw  $v0,12($fp)
+$L30:
+    lw  $v0,12($fp)
+    slt $v0,$v0,58
+    bne $v0,$zero,$L33
+    b   $L31
+$L33:
+    lw  $v1,8($fp)
+    la  $v0,space
+    addu    $v1,$v1,$v0
+    lbu $v0,12($fp)
+    sb  $v0,0($v1)
+    lw  $v0,12($fp)
+    sll $v1,$v0,2
+    la  $v0,spaceIndex
+    addu    $v1,$v1,$v0
+    lw  $v0,8($fp)
+    sw  $v0,0($v1)
+    lw  $v0,8($fp)
+    addu    $v0,$v0,1
+    sw  $v0,8($fp)
+    lw  $v0,12($fp)
+    addu    $v0,$v0,1
+    sw  $v0,12($fp)
+    b   $L30
+$L31:
     lw  $v0,8($fp)
     addu    $v0,$v0,1
     sw  $v0,8($fp)
@@ -468,10 +836,10 @@ belongsToSpace:
     sw  $a0,24($fp)
     lw  $v0,24($fp)
     slt $v0,$v0,123
-    bne $v0,$zero,$L23
+    bne $v0,$zero,$L35
     sw  $zero,8($fp)
-    b   $L22
-$L23:
+    b   $L34
+$L35:
     lw  $v0,24($fp)
     sll $v1,$v0,2
     la  $v0,spaceIndex
@@ -481,7 +849,7 @@ $L23:
     xor $v0,$v1,$v0
     sltu    $v0,$zero,$v0
     sw  $v0,8($fp)
-$L22:
+$L34:
     lw  $v0,8($fp)
     move    $sp,$fp
     lw  $fp,20($sp)
@@ -490,243 +858,873 @@ $L22:
     .end    belongsToSpace
     .size   belongsToSpace, .-belongsToSpace
     .align  2
-    .globl  isCapicua
-    .ent    isCapicua
-isCapicua:
-    .frame  $fp,40,$ra      # vars= 24, regs= 2/0, args= 0, extra= 8
-    .mask   0x50000000,-4
-    .fmask  0x00000000,0
-    .set    noreorder
-    .cpload $t9
-    .set    reorder
-    subu    $sp,$sp,40
-    .cprestore 0
-    sw  $fp,36($sp)
-    sw  $gp,32($sp)
-    move    $fp,$sp
-    sw  $a0,40($fp)
-    sw  $a1,44($fp)
-    lw  $v0,44($fp)
-    bne $v0,$zero,$L25
-    sw  $zero,24($fp)
-    b   $L24
-$L25:
-    lw  $v1,44($fp)
-    li  $v0,1           # 0x1
-    bne $v1,$v0,$L26
-    li  $v0,1           # 0x1
-    sw  $v0,24($fp)
-    b   $L24
-$L26:
-    sw  $zero,8($fp)
-    lw  $v0,44($fp)
-    addu    $v0,$v0,-1
-    sw  $v0,12($fp)
-$L27:
-    lw  $v0,8($fp)
-    lw  $v1,12($fp)
-    sltu    $v0,$v0,$v1
-    bne $v0,$zero,$L29
-    b   $L28
-$L29:
-    lw  $v1,40($fp)
-    lw  $v0,8($fp)
-    addu    $v0,$v1,$v0
-    lb  $v0,0($v0)
-    sll $v1,$v0,1
-    lw  $v0,_tolower_tab_
-    addu    $v0,$v1,$v0
-    addu    $v0,$v0,2
-    lh  $v0,0($v0)
-    sw  $v0,16($fp)
-    lw  $v1,40($fp)
-    lw  $v0,12($fp)
-    addu    $v0,$v1,$v0
-    lb  $v0,0($v0)
-    sll $v1,$v0,1
-    lw  $v0,_tolower_tab_
-    addu    $v0,$v1,$v0
-    addu    $v0,$v0,2
-    lh  $v0,0($v0)
-    sw  $v0,20($fp)
-    lw  $v1,16($fp)
-    lw  $v0,20($fp)
-    beq $v1,$v0,$L30
-    sw  $zero,24($fp)
-    b   $L24
-$L30:
-    lw  $v0,8($fp)
-    addu    $v0,$v0,1
-    sw  $v0,8($fp)
-    lw  $v0,12($fp)
-    addu    $v0,$v0,-1
-    sw  $v0,12($fp)
-    b   $L27
-$L28:
-    li  $v0,1           # 0x1
-    sw  $v0,24($fp)
-$L24:
-    lw  $v0,24($fp)
-    move    $sp,$fp
-    lw  $fp,36($sp)
-    addu    $sp,$sp,40
-    j   $ra
-    .end    isCapicua
-    .size   isCapicua, .-isCapicua
-    .align  2
-    .globl  readFile
-    .ent    readFile
-readFile:
-    .frame  $fp,160,$ra     # vars= 120, regs= 3/0, args= 16, extra= 8
+    .globl  writeOutFile
+    .ent    writeOutFile
+writeOutFile:
+    .frame  $fp,56,$ra      # vars= 16, regs= 3/0, args= 16, extra= 8
     .mask   0xd0000000,-8
     .fmask  0x00000000,0
     .set    noreorder
     .cpload $t9
     .set    reorder
-    subu    $sp,$sp,160
+    subu    $sp,$sp,56
     .cprestore 16
-    sw  $ra,152($sp)
-    sw  $fp,148($sp)
-    sw  $gp,144($sp)
+    sw  $ra,48($sp)
+    sw  $fp,44($sp)
+    sw  $gp,40($sp)
     move    $fp,$sp
-    sw  $a0,160($fp)
-    sw  $a1,164($fp)
-    lw  $a0,160($fp)
-    move    $a1,$zero
+    sw  $a0,56($fp)
+    sw  $a1,60($fp)
+    sw  $a2,64($fp)
+    sw  $a3,68($fp)
+    lw  $a0,56($fp)
+    lw  $a1,60($fp)
     move    $a2,$zero
     la  $t9,fseek
     jal $ra,$t9
-    lw  $a0,164($fp)
-    move    $a1,$zero
-    move    $a2,$zero
-    la  $t9,fseek
-    jal $ra,$t9
-    lw  $v1,160($fp)
-    lw  $v0,160($fp)
-    lw  $v0,4($v0)
-    addu    $v0,$v0,-1
-    sw  $v0,4($v1)
-    bgez    $v0,$L32
-    lw  $a0,160($fp)
-    la  $t9,__srget
-    jal $ra,$t9
-    sw  $v0,136($fp)
-    b   $L33
-$L32:
-    lw  $v0,160($fp)
-    lw  $v1,0($v0)
-    move    $a0,$v1
-    lbu $a0,0($a0)
-    sw  $a0,136($fp)
-    addu    $v1,$v1,1
-    sw  $v1,0($v0)
-$L33:
-    lw  $v0,136($fp)
-    sw  $v0,24($fp)
+    bgez    $v0,$L37
+    li  $v0,1           # 0x1
+    sw  $v0,32($fp)
+    b   $L36
+$L37:
     sw  $zero,28($fp)
-$L34:
-    lw  $v1,24($fp)
-    li  $v0,-1          # 0xffffffffffffffff
-    bne $v1,$v0,$L36
-    b   $L31
-$L36:
-    lw  $a0,24($fp)
-    la  $t9,belongsToSpace
-    jal $ra,$t9
-    beq $v0,$zero,$L37
-    addu    $v1,$fp,32
+$L38:
+    lw  $v1,64($fp)
+    lw  $v0,60($fp)
+    subu    $v1,$v1,$v0
     lw  $v0,28($fp)
-    addu    $v1,$v1,$v0
-    lbu $v0,24($fp)
-    sb  $v0,0($v1)
+    slt $v0,$v0,$v1
+    bne $v0,$zero,$L41
+    b   $L39
+$L41:
+    addu    $a0,$fp,24
+    li  $a1,1           # 0x1
+    li  $a2,1           # 0x1
+    lw  $a3,56($fp)
+    la  $t9,fread
+    jal $ra,$t9
+    bne $v0,$zero,$L42
+    li  $v0,1           # 0x1
+    sw  $v0,32($fp)
+    b   $L36
+$L42:
+    addu    $a0,$fp,24
+    li  $a1,1           # 0x1
+    li  $a2,1           # 0x1
+    lw  $a3,68($fp)
+    la  $t9,fwrite
+    jal $ra,$t9
+    bne $v0,$zero,$L40
+    li  $v0,1           # 0x1
+    sw  $v0,32($fp)
+    b   $L36
+$L40:
     lw  $v0,28($fp)
     addu    $v0,$v0,1
     sw  $v0,28($fp)
     b   $L38
-$L37:
-    addu    $v0,$fp,32
-    move    $a0,$v0
-    lw  $a1,28($fp)
-    la  $t9,isCapicua
-    jal $ra,$t9
-    beq $v0,$zero,$L39
-    addu    $v0,$fp,32
-    move    $a0,$v0
-    lw  $a1,28($fp)
-    li  $a2,1           # 0x1
-    lw  $a3,164($fp)
-    la  $t9,fwrite
-    jal $ra,$t9
-    lw  $a0,ENTER
+$L39:
+    la  $a0,ENTER
     li  $a1,1           # 0x1
     li  $a2,1           # 0x1
-    lw  $a3,164($fp)
+    lw  $a3,68($fp)
     la  $t9,fwrite
     jal $ra,$t9
-$L39:
-    sw  $zero,28($fp)
-$L38:
-    lw  $v1,160($fp)
-    lw  $v0,160($fp)
+    bne $v0,$zero,$L44
+    li  $v0,1           # 0x1
+    sw  $v0,32($fp)
+    b   $L36
+$L44:
+    sw  $zero,32($fp)
+$L36:
+    lw  $v0,32($fp)
+    move    $sp,$fp
+    lw  $ra,48($sp)
+    lw  $fp,44($sp)
+    addu    $sp,$sp,56
+    j   $ra
+    .end    writeOutFile
+    .size   writeOutFile, .-writeOutFile
+    .align  2
+    .globl  readLetter
+    .ent    readLetter
+readLetter:
+    .frame  $fp,48,$ra      # vars= 8, regs= 3/0, args= 16, extra= 8
+    .mask   0xd0000000,-8
+    .fmask  0x00000000,0
+    .set    noreorder
+    .cpload $t9
+    .set    reorder
+    subu    $sp,$sp,48
+    .cprestore 16
+    sw  $ra,40($sp)
+    sw  $fp,36($sp)
+    sw  $gp,32($sp)
+    move    $fp,$sp
+    sw  $a0,48($fp)
+    sw  $a1,52($fp)
+    sw  $a2,56($fp)
+    lw  $a0,48($fp)
+    lw  $a1,52($fp)
+    move    $a2,$zero
+    la  $t9,fseek
+    jal $ra,$t9
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L46
+    li  $v0,1           # 0x1
+    sw  $v0,24($fp)
+    b   $L45
+$L46:
+    lw  $a0,56($fp)
+    li  $a1,1           # 0x1
+    li  $a2,1           # 0x1
+    lw  $a3,48($fp)
+    la  $t9,fread
+    jal $ra,$t9
+    bne $v0,$zero,$L47
+    li  $v0,1           # 0x1
+    sw  $v0,24($fp)
+    b   $L45
+$L47:
+    sw  $zero,24($fp)
+$L45:
+    lw  $v0,24($fp)
+    move    $sp,$fp
+    lw  $ra,40($sp)
+    lw  $fp,36($sp)
+    addu    $sp,$sp,48
+    j   $ra
+    .end    readLetter
+    .size   readLetter, .-readLetter
+    .align  2
+    .globl  capicua
+    .ent    capicua
+capicua:
+    .frame  $fp,72,$ra      # vars= 32, regs= 3/0, args= 16, extra= 8
+    .mask   0xd0000000,-8
+    .fmask  0x00000000,0
+    .set    noreorder
+    .cpload $t9
+    .set    reorder
+    subu    $sp,$sp,72
+    .cprestore 16
+    sw  $ra,64($sp)
+    sw  $fp,60($sp)
+    sw  $gp,56($sp)
+    move    $fp,$sp
+    sw  $a0,72($fp)
+    sw  $a1,76($fp)
+    sw  $a2,80($fp)
+    sw  $a3,84($fp)
+    li  $v0,1           # 0x1
+    sb  $v0,26($fp)
+    lw  $v1,80($fp)
+    lw  $v0,76($fp)
+    subu    $v0,$v1,$v0
+    sw  $v0,28($fp)
+    lw  $v0,76($fp)
+    sw  $v0,32($fp)
+    lw  $v0,80($fp)
+    addu    $v0,$v0,-1
+    sw  $v0,36($fp)
+    lw  $v0,28($fp)
+    bne $v0,$zero,$L50
+    sw  $zero,48($fp)
+    b   $L48
+$L50:
+    lw  $v0,32($fp)
+    lw  $v1,36($fp)
+    slt $v0,$v1,$v0
+    beq $v0,$zero,$L52
+    b   $L51
+$L52:
+    lw  $a0,72($fp)
+    lw  $a1,32($fp)
+    addu    $a2,$fp,24
+    la  $t9,readLetter
+    jal $ra,$t9
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L53
+    li  $v0,1           # 0x1
+    sw  $v0,48($fp)
+    b   $L48
+$L53:
+    addu    $v0,$fp,25
+    lw  $a0,72($fp)
+    lw  $a1,36($fp)
+    move    $a2,$v0
+    la  $t9,readLetter
+    jal $ra,$t9
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L54
+    li  $v0,1           # 0x1
+    sw  $v0,48($fp)
+    b   $L48
+$L54:
+    lb  $v0,24($fp)
+    sll $v1,$v0,1
+    lw  $v0,_tolower_tab_
+    addu    $v0,$v1,$v0
+    addu    $v0,$v0,2
+    lh  $v0,0($v0)
+    sw  $v0,40($fp)
+    lb  $v0,25($fp)
+    sll $v1,$v0,1
+    lw  $v0,_tolower_tab_
+    addu    $v0,$v1,$v0
+    addu    $v0,$v0,2
+    lh  $v0,0($v0)
+    sw  $v0,44($fp)
+    lw  $v1,40($fp)
+    lw  $v0,44($fp)
+    beq $v1,$v0,$L55
+    sb  $zero,26($fp)
+    b   $L51
+$L55:
+    lw  $v0,36($fp)
+    addu    $v0,$v0,-1
+    sw  $v0,36($fp)
+    lw  $v0,32($fp)
+    addu    $v0,$v0,1
+    sw  $v0,32($fp)
+    b   $L50
+$L51:
+    lbu $v0,26($fp)
+    bne $v0,$zero,$L56
+    sw  $zero,48($fp)
+    b   $L48
+$L56:
+    lw  $a0,72($fp)
+    lw  $a1,76($fp)
+    lw  $a2,80($fp)
+    lw  $a3,84($fp)
+    la  $t9,writeOutFile
+    jal $ra,$t9
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L57
+    li  $v0,1           # 0x1
+    sw  $v0,48($fp)
+    b   $L48
+$L57:
+    sw  $zero,48($fp)
+$L48:
+    lw  $v0,48($fp)
+    move    $sp,$fp
+    lw  $ra,64($sp)
+    lw  $fp,60($sp)
+    addu    $sp,$sp,72
+    j   $ra
+    .end    capicua
+    .size   capicua, .-capicua
+    .align  2
+    .globl  readFile
+    .ent    readFile
+readFile:
+    .frame  $fp,72,$ra      # vars= 32, regs= 3/0, args= 16, extra= 8
+    .mask   0xd0000000,-8
+    .fmask  0x00000000,0
+    .set    noreorder
+    .cpload $t9
+    .set    reorder
+    subu    $sp,$sp,72
+    .cprestore 16
+    sw  $ra,64($sp)
+    sw  $fp,60($sp)
+    sw  $gp,56($sp)
+    move    $fp,$sp
+    sw  $a0,72($fp)
+    sw  $a1,76($fp)
+    lw  $v1,72($fp)
+    la  $v0,__sF
+    beq $v1,$v0,$L59
+    lw  $a0,72($fp)
+    move    $a1,$zero
+    li  $a2,2           # 0x2
+    la  $t9,fseek
+    jal $ra,$t9
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L60
+    li  $v0,1           # 0x1
+    sw  $v0,44($fp)
+    b   $L58
+$L60:
+    lw  $a0,72($fp)
+    la  $t9,ftell
+    jal $ra,$t9
+    bne $v0,$zero,$L61
+    sw  $zero,44($fp)
+    b   $L58
+$L61:
+    lw  $a0,72($fp)
+    move    $a1,$zero
+    move    $a2,$zero
+    la  $t9,fseek
+    jal $ra,$t9
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L59
+    li  $v0,1           # 0x1
+    sw  $v0,44($fp)
+    b   $L58
+$L59:
+    lw  $v1,76($fp)
+    la  $v0,__sF+88
+    beq $v1,$v0,$L63
+    lw  $a0,76($fp)
+    move    $a1,$zero
+    move    $a2,$zero
+    la  $t9,fseek
+    jal $ra,$t9
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L63
+    li  $v0,1           # 0x1
+    sw  $v0,44($fp)
+    b   $L58
+$L63:
+    lw  $a0,72($fp)
+    la  $t9,ftell
+    jal $ra,$t9
+    sw  $v0,24($fp)
+    lw  $v0,24($fp)
+    sw  $v0,28($fp)
+    lw  $v1,72($fp)
+    lw  $v0,72($fp)
     lw  $v0,4($v0)
     addu    $v0,$v0,-1
     sw  $v0,4($v1)
-    bgez    $v0,$L40
-    lw  $a0,160($fp)
+    bgez    $v0,$L65
+    lw  $a0,72($fp)
     la  $t9,__srget
     jal $ra,$t9
-    sw  $v0,140($fp)
-    b   $L41
-$L40:
-    lw  $v0,160($fp)
+    sw  $v0,48($fp)
+    b   $L66
+$L65:
+    lw  $v0,72($fp)
     lw  $v1,0($v0)
     move    $a0,$v1
     lbu $a0,0($a0)
-    sw  $a0,140($fp)
+    sw  $a0,48($fp)
     addu    $v1,$v1,1
     sw  $v1,0($v0)
-$L41:
-    lw  $v0,140($fp)
+$L66:
+    lw  $v0,48($fp)
+    sw  $v0,36($fp)
+    sb  $zero,40($fp)
+$L67:
+    lw  $v1,36($fp)
+    li  $v0,-1          # 0xffffffffffffffff
+    bne $v1,$v0,$L69
+    b   $L68
+$L69:
+    lw  $a0,36($fp)
+    la  $t9,belongsToSpace
+    jal $ra,$t9
+    beq $v0,$zero,$L70
+    lbu $v0,40($fp)
+    bne $v0,$zero,$L71
+    li  $v0,1           # 0x1
+    sb  $v0,40($fp)
+    lw  $a0,72($fp)
+    la  $t9,ftell
+    jal $ra,$t9
+    addu    $v0,$v0,-1
     sw  $v0,24($fp)
-    b   $L34
-$L31:
+$L71:
+    lw  $a0,72($fp)
+    la  $t9,ftell
+    jal $ra,$t9
+    sw  $v0,28($fp)
+    b   $L72
+$L70:
+    sb  $zero,40($fp)
+    lw  $a0,72($fp)
+    la  $t9,ftell
+    jal $ra,$t9
+    sw  $v0,32($fp)
+    lw  $a0,72($fp)
+    lw  $a1,24($fp)
+    lw  $a2,28($fp)
+    lw  $a3,76($fp)
+    la  $t9,capicua
+    jal $ra,$t9
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L73
+    li  $v0,1           # 0x1
+    sw  $v0,44($fp)
+    b   $L58
+$L73:
+    lw  $v0,28($fp)
+    sw  $v0,24($fp)
+    lw  $a0,72($fp)
+    lw  $a1,32($fp)
+    move    $a2,$zero
+    la  $t9,fseek
+    jal $ra,$t9
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L72
+    li  $v0,1           # 0x1
+    sw  $v0,44($fp)
+    b   $L58
+$L72:
+    lw  $v1,72($fp)
+    lw  $v0,72($fp)
+    lw  $v0,4($v0)
+    addu    $v0,$v0,-1
+    sw  $v0,4($v1)
+    bgez    $v0,$L75
+    lw  $a0,72($fp)
+    la  $t9,__srget
+    jal $ra,$t9
+    sw  $v0,52($fp)
+    b   $L76
+$L75:
+    lw  $v0,72($fp)
+    lw  $v1,0($v0)
+    move    $a0,$v1
+    lbu $a0,0($a0)
+    sw  $a0,52($fp)
+    addu    $v1,$v1,1
+    sw  $v1,0($v0)
+$L76:
+    lw  $v0,52($fp)
+    sw  $v0,36($fp)
+    b   $L67
+$L68:
+    sw  $zero,44($fp)
+$L58:
+    lw  $v0,44($fp)
     move    $sp,$fp
-    lw  $ra,152($sp)
-    lw  $fp,148($sp)
-    addu    $sp,$sp,160
+    lw  $ra,64($sp)
+    lw  $fp,60($sp)
+    addu    $sp,$sp,72
     j   $ra
     .end    readFile
     .size   readFile, .-readFile
+    .align  2
+    .globl  equal
+    .ent    equal
+equal:
+    .frame  $fp,48,$ra      # vars= 8, regs= 3/0, args= 16, extra= 8
+    .mask   0xd0000000,-8
+    .fmask  0x00000000,0
+    .set    noreorder
+    .cpload $t9
+    .set    reorder
+    subu    $sp,$sp,48
+    .cprestore 16
+    sw  $ra,40($sp)
+    sw  $fp,36($sp)
+    sw  $gp,32($sp)
+    move    $fp,$sp
+    sw  $a0,48($fp)
+    sw  $a1,52($fp)
+    lw  $a0,48($fp)
+    lw  $a1,52($fp)
+    la  $t9,strcmp
+    jal $ra,$t9
+    sw  $v0,24($fp)
+    lw  $v1,24($fp)
+    xori    $v0,$v1,0x0
+    sltu    $v0,$v0,1
+    sw  $v0,24($fp)
+    lw  $v0,24($fp)
+    move    $sp,$fp
+    lw  $ra,40($sp)
+    lw  $fp,36($sp)
+    addu    $sp,$sp,48
+    j   $ra
+    .end    equal
+    .size   equal, .-equal
     .rdata
     .align  2
+$LC0:
+    .ascii  "-i\000"
+    .align  2
 $LC1:
-    .byte   105
-    .byte   111
-    .byte   86
-    .byte   104
+    .ascii  "-o\000"
     .align  2
 $LC2:
-    .ascii  "%s\n\000"
+    .ascii  "-V\000"
     .align  2
 $LC3:
-    .ascii  "tp0: version %s\n\000"
+    .ascii  "-h\000"
     .align  2
 $LC4:
-    .ascii  "dev\000"
+    .ascii  "--version\000"
     .align  2
 $LC5:
-    .ascii  "Invalid argument: %s\000"
+    .ascii  "--help\000"
     .align  2
 $LC6:
-    .ascii  "r\000"
+    .ascii  "--input\000"
     .align  2
 $LC7:
+    .ascii  "--output\000"
+    .data
+    .align  2
+$LC8:
+    .word   $LC0
+    .word   $LC1
+    .word   $LC2
+    .word   $LC3
+    .word   $LC4
+    .word   $LC5
+    .word   $LC6
+    .word   $LC7
+    .rdata
+    .align  2
+$LC9:
+    .ascii  "\000"
+    .align  2
+$LC10:
+    .ascii  "%s\n\000"
+    .align  2
+$LC11:
+    .ascii  "tp0: version %s\n\000"
+    .align  2
+$LC12:
+    .ascii  "0.2\000"
+    .align  2
+$LC13:
+    .ascii  "Invalid argument: %s\n\000"
+    .align  2
+$LC14:
+    .ascii  "-\000"
+    .align  2
+$LC15:
+    .ascii  "r\000"
+    .align  2
+$LC16:
     .ascii  "w\000"
+    .align  2
+$LC17:
+    .ascii  "nullStr\000"
     .text
     .align  2
-    .globl  arg_parse
-    .ent    arg_parse
-arg_parse:
+    .globl  argParse
+    .ent    argParse
+argParse:
+    .frame  $fp,104,$ra     # vars= 64, regs= 3/0, args= 16, extra= 8
+    .mask   0xd0000000,-8
+    .fmask  0x00000000,0
+    .set    noreorder
+    .cpload $t9
+    .set    reorder
+    subu    $sp,$sp,104
+    .cprestore 16
+    sw  $ra,96($sp)
+    sw  $fp,92($sp)
+    sw  $gp,88($sp)
+    move    $fp,$sp
+    sw  $a0,104($fp)
+    sw  $a1,108($fp)
+    sw  $a2,112($fp)
+    sw  $a3,116($fp)
+    li  $v0,1           # 0x1
+    sw  $v0,24($fp)
+    li  $v0,8           # 0x8
+    sw  $v0,28($fp)
+    lw  $v0,$LC8
+    sw  $v0,32($fp)
+    lw  $v0,$LC8+4
+    sw  $v0,36($fp)
+    lw  $v0,$LC8+8
+    sw  $v0,40($fp)
+    lw  $v0,$LC8+12
+    sw  $v0,44($fp)
+    lw  $v0,$LC8+16
+    sw  $v0,48($fp)
+    lw  $v0,$LC8+20
+    sw  $v0,52($fp)
+    lw  $v0,$LC8+24
+    sw  $v0,56($fp)
+    lw  $v0,$LC8+28
+    sw  $v0,60($fp)
+    la  $v0,$LC9
+    sw  $v0,68($fp)
+$L79:
+    lw  $v0,24($fp)
+    lw  $v1,104($fp)
+    slt $v0,$v0,$v1
+    bne $v0,$zero,$L81
+    b   $L80
+$L81:
+    li  $v0,1           # 0x1
+    sb  $v0,72($fp)
+    lw  $v0,24($fp)
+    sll $v1,$v0,2
+    lw  $v0,108($fp)
+    addu    $v0,$v1,$v0
+    lw  $v0,0($v0)
+    lb  $v1,0($v0)
+    li  $v0,45          # 0x2d
+    bne $v1,$v0,$L82
+    sw  $zero,76($fp)
+$L83:
+    lw  $v0,76($fp)
+    lw  $v1,28($fp)
+    slt $v0,$v0,$v1
+    bne $v0,$zero,$L86
+    b   $L84
+$L86:
+    lw  $v0,24($fp)
+    sll $v1,$v0,2
+    lw  $v0,108($fp)
+    addu    $a0,$v1,$v0
+    lw  $v0,76($fp)
+    sll $v1,$v0,2
+    addu    $v0,$fp,24
+    addu    $v0,$v1,$v0
+    addu    $v0,$v0,8
+    lw  $a0,0($a0)
+    lw  $a1,0($v0)
+    la  $t9,strcmp
+    jal $ra,$t9
+    bne $v0,$zero,$L85
+    lw  $v0,24($fp)
+    sll $v1,$v0,2
+    lw  $v0,108($fp)
+    addu    $v0,$v1,$v0
+    lw  $v0,0($v0)
+    sw  $v0,68($fp)
+    sb  $zero,72($fp)
+    b   $L84
+$L85:
+    lw  $v0,76($fp)
+    addu    $v0,$v0,1
+    sw  $v0,76($fp)
+    b   $L83
+$L84:
+    lw  $a0,68($fp)
+    la  $a1,$LC3
+    la  $t9,equal
+    jal $ra,$t9
+    bne $v0,$zero,$L89
+    lw  $a0,68($fp)
+    la  $a1,$LC5
+    la  $t9,equal
+    jal $ra,$t9
+    bne $v0,$zero,$L89
+    b   $L88
+$L89:
+    la  $a0,$LC10
+    la  $a1,help_str
+    la  $t9,printf
+    jal $ra,$t9
+    lw  $v1,116($fp)
+    li  $v0,1           # 0x1
+    sw  $v0,0($v1)
+    sw  $zero,80($fp)
+    b   $L78
+$L88:
+    lw  $a0,68($fp)
+    la  $a1,$LC2
+    la  $t9,equal
+    jal $ra,$t9
+    bne $v0,$zero,$L91
+    lw  $a0,68($fp)
+    la  $a1,$LC4
+    la  $t9,equal
+    jal $ra,$t9
+    bne $v0,$zero,$L91
+    b   $L90
+$L91:
+    la  $a0,$LC11
+    la  $a1,$LC12
+    la  $t9,printf
+    jal $ra,$t9
+    lw  $v1,116($fp)
+    li  $v0,1           # 0x1
+    sw  $v0,0($v1)
+    sw  $zero,80($fp)
+    b   $L78
+$L90:
+    lbu $v0,72($fp)
+    beq $v0,$zero,$L93
+    lw  $v0,24($fp)
+    sll $v1,$v0,2
+    lw  $v0,108($fp)
+    addu    $v0,$v1,$v0
+    la  $a0,$LC13
+    lw  $a1,0($v0)
+    la  $t9,printf
+    jal $ra,$t9
+    lw  $v0,112($fp)
+    sw  $zero,0($v0)
+    li  $v0,1           # 0x1
+    sw  $v0,80($fp)
+    b   $L78
+$L82:
+    lw  $v0,24($fp)
+    sll $v1,$v0,2
+    lw  $v0,108($fp)
+    addu    $v0,$v1,$v0
+    lw  $a0,0($v0)
+    la  $a1,$LC14
+    la  $t9,equal
+    jal $ra,$t9
+    sb  $v0,64($fp)
+    lw  $a0,68($fp)
+    la  $a1,$LC0
+    la  $t9,equal
+    jal $ra,$t9
+    bne $v0,$zero,$L95
+    lw  $a0,68($fp)
+    la  $a1,$LC6
+    la  $t9,equal
+    jal $ra,$t9
+    bne $v0,$zero,$L95
+    b   $L94
+$L95:
+    lbu $v0,64($fp)
+    bne $v0,$zero,$L94
+    lw  $v0,24($fp)
+    sll $v1,$v0,2
+    lw  $v0,108($fp)
+    addu    $v0,$v1,$v0
+    lw  $a0,0($v0)
+    la  $a1,$LC15
+    la  $t9,fopen
+    jal $ra,$t9
+    move    $v1,$v0
+    lw  $v0,112($fp)
+    sw  $v1,0($v0)
+    lw  $v0,112($fp)
+    lw  $v0,0($v0)
+    bne $v0,$zero,$L97
+    li  $v0,1           # 0x1
+    sw  $v0,80($fp)
+    b   $L78
+$L94:
+    lw  $a0,68($fp)
+    la  $a1,$LC1
+    la  $t9,equal
+    jal $ra,$t9
+    bne $v0,$zero,$L99
+    lw  $a0,68($fp)
+    la  $a1,$LC7
+    la  $t9,equal
+    jal $ra,$t9
+    bne $v0,$zero,$L99
+    b   $L97
+$L99:
+    lbu $v0,64($fp)
+    bne $v0,$zero,$L97
+    lw  $v0,24($fp)
+    sll $v1,$v0,2
+    lw  $v0,108($fp)
+    addu    $v0,$v1,$v0
+    lw  $a0,0($v0)
+    la  $a1,$LC16
+    la  $t9,fopen
+    jal $ra,$t9
+    move    $v1,$v0
+    lw  $v0,112($fp)
+    addu    $v0,$v0,4
+    sw  $v1,0($v0)
+    lw  $v0,112($fp)
+    addu    $v0,$v0,4
+    lw  $v0,0($v0)
+    bne $v0,$zero,$L97
+    li  $v0,1           # 0x1
+    sw  $v0,80($fp)
+    b   $L78
+$L97:
+    la  $v0,$LC17
+    sw  $v0,68($fp)
+$L93:
+    lw  $v0,24($fp)
+    addu    $v0,$v0,1
+    sw  $v0,24($fp)
+    b   $L79
+$L80:
+    sw  $zero,80($fp)
+$L78:
+    lw  $v0,80($fp)
+    move    $sp,$fp
+    lw  $ra,96($sp)
+    lw  $fp,92($sp)
+    addu    $sp,$sp,104
+    j   $ra
+    .end    argParse
+    .size   argParse, .-argParse
+    .align  2
+    .globl  stdin_capicua
+    .ent    stdin_capicua
+stdin_capicua:
+    .frame  $fp,24,$ra      # vars= 8, regs= 2/0, args= 0, extra= 8
+    .mask   0x50000000,-4
+    .fmask  0x00000000,0
+    .set    noreorder
+    .cpload $t9
+    .set    reorder
+    subu    $sp,$sp,24
+    .cprestore 0
+    sw  $fp,20($sp)
+    sw  $gp,16($sp)
+    move    $fp,$sp
+    sw  $a0,24($fp)
+    sw  $a1,28($fp)
+    sw  $zero,8($fp)
+$L102:
+    lw  $v0,8($fp)
+    lw  $v1,28($fp)
+    sltu    $v0,$v0,$v1
+    bne $v0,$zero,$L104
+    b   $L103
+$L104:
+    lw  $v1,24($fp)
+    lw  $v0,8($fp)
+    addu    $v0,$v1,$v0
+    lb  $v0,0($v0)
+    sll $v1,$v0,1
+    lw  $v0,_tolower_tab_
+    addu    $v0,$v1,$v0
+    addu    $a0,$v0,2
+    lw  $v1,28($fp)
+    lw  $v0,8($fp)
+    subu    $v1,$v1,$v0
+    lw  $v0,24($fp)
+    addu    $v0,$v1,$v0
+    addu    $v0,$v0,-1
+    lb  $v0,0($v0)
+    sll $v1,$v0,1
+    lw  $v0,_tolower_tab_
+    addu    $v0,$v1,$v0
+    addu    $v0,$v0,2
+    lh  $v1,0($a0)
+    lh  $v0,0($v0)
+    beq $v1,$v0,$L105
+    sw  $zero,12($fp)
+    b   $L101
+$L105:
+    lw  $v0,8($fp)
+    addu    $v0,$v0,1
+    sw  $v0,8($fp)
+    b   $L102
+$L103:
+    li  $v0,1           # 0x1
+    sw  $v0,12($fp)
+$L101:
+    lw  $v0,12($fp)
+    move    $sp,$fp
+    lw  $fp,20($sp)
+    addu    $sp,$sp,24
+    j   $ra
+    .end    stdin_capicua
+    .size   stdin_capicua, .-stdin_capicua
+    .align  2
+    .globl  read_stdin
+    .ent    read_stdin
+read_stdin:
     .frame  $fp,64,$ra      # vars= 24, regs= 3/0, args= 16, extra= 8
     .mask   0xd0000000,-8
     .fmask  0x00000000,0
@@ -740,161 +1738,92 @@ arg_parse:
     sw  $gp,48($sp)
     move    $fp,$sp
     sw  $a0,64($fp)
-    sw  $a1,68($fp)
-    sw  $a2,72($fp)
-    sw  $a3,76($fp)
-    li  $v0,1           # 0x1
+    li  $v0,1024            # 0x400
     sw  $v0,24($fp)
-    addu    $v1,$fp,32
-    la  $v0,$LC1
-    lwl $a0,3($v0)
-    lwr $a0,0($v0)
-    swl $a0,3($v1)
-    swr $a0,0($v1)
-    sb  $zero,40($fp)
-$L43:
-    lw  $v0,24($fp)
-    lw  $v1,64($fp)
-    slt $v0,$v0,$v1
-    bne $v0,$zero,$L45
-    b   $L42
-$L45:
-    lb  $v0,40($fp)
-    bne $v0,$zero,$L46
-    lw  $v0,24($fp)
-    sll $v1,$v0,2
-    lw  $v0,68($fp)
-    addu    $v0,$v1,$v0
-    lw  $v0,0($v0)
-    lb  $v1,0($v0)
-    li  $v0,45          # 0x2d
-    bne $v1,$v0,$L46
-    sw  $zero,44($fp)
-$L47:
-    addu    $v0,$fp,32
+    lw  $a0,24($fp)
+    la  $t9,malloc
+    jal $ra,$t9
+    sw  $v0,28($fp)
+    la  $a0,__sF
+    la  $t9,fgetc
+    jal $ra,$t9
+    sb  $v0,32($fp)
+    sw  $zero,36($fp)
+$L107:
+    lb  $v1,32($fp)
+    li  $v0,-1          # 0xffffffffffffffff
+    bne $v1,$v0,$L109
+    b   $L108
+$L109:
+    lb  $v0,32($fp)
     move    $a0,$v0
-    la  $t9,strlen
+    la  $t9,belongsToSpace
     jal $ra,$t9
-    move    $v1,$v0
-    lw  $v0,44($fp)
-    sltu    $v0,$v0,$v1
-    bne $v0,$zero,$L50
-    b   $L48
-$L50:
+    beq $v0,$zero,$L110
+    lw  $v1,36($fp)
     lw  $v0,24($fp)
-    sll $v1,$v0,2
-    lw  $v0,68($fp)
-    addu    $v0,$v1,$v0
-    lw  $v0,0($v0)
-    addu    $a0,$v0,1
-    addu    $v1,$fp,32
-    lw  $v0,44($fp)
-    addu    $v0,$v1,$v0
-    lb  $v1,0($a0)
-    lb  $v0,0($v0)
-    bne $v1,$v0,$L49
+    bne $v1,$v0,$L111
     lw  $v0,24($fp)
-    sll $v1,$v0,2
-    lw  $v0,68($fp)
-    addu    $v0,$v1,$v0
-    lw  $v0,0($v0)
-    addu    $v0,$v0,1
-    lbu $v0,0($v0)
-    sb  $v0,40($fp)
-    b   $L48
-$L49:
-    lw  $v0,44($fp)
-    addu    $v0,$v0,1
-    sw  $v0,44($fp)
-    b   $L47
-$L48:
-    lb  $v1,40($fp)
-    li  $v0,104         # 0x68
-    bne $v1,$v0,$L52
-    la  $a0,$LC2
-    la  $a1,help_str
-    la  $t9,printf
-    jal $ra,$t9
-    lw  $v1,76($fp)
-    li  $v0,1           # 0x1
-    sw  $v0,0($v1)
-    b   $L42
-$L52:
-    lb  $v1,40($fp)
-    li  $v0,86          # 0x56
-    bne $v1,$v0,$L53
-    la  $a0,$LC3
-    la  $a1,$LC4
-    la  $t9,printf
-    jal $ra,$t9
-    lw  $v1,76($fp)
-    li  $v0,1           # 0x1
-    sw  $v0,0($v1)
-    b   $L42
-$L53:
-    lb  $v0,40($fp)
-    bne $v0,$zero,$L55
-    lw  $v0,24($fp)
-    sll $v1,$v0,2
-    lw  $v0,68($fp)
-    addu    $v0,$v1,$v0
-    la  $a0,$LC5
-    lw  $a1,0($v0)
-    la  $t9,printf
-    jal $ra,$t9
-    lw  $v0,72($fp)
-    sw  $zero,0($v0)
-    b   $L42
-$L46:
-    lb  $v1,40($fp)
-    li  $v0,105         # 0x69
-    bne $v1,$v0,$L56
-    lw  $v0,24($fp)
-    sll $v1,$v0,2
-    lw  $v0,68($fp)
-    addu    $v0,$v1,$v0
-    lw  $a0,0($v0)
-    la  $a1,$LC6
-    la  $t9,fopen
-    jal $ra,$t9
-    move    $v1,$v0
-    lw  $v0,72($fp)
-    sw  $v1,0($v0)
-    b   $L57
-$L56:
-    lb  $v1,40($fp)
-    li  $v0,111         # 0x6f
-    bne $v1,$v0,$L57
-    lw  $v0,24($fp)
-    sll $v1,$v0,2
-    lw  $v0,68($fp)
-    addu    $v0,$v1,$v0
-    lw  $a0,0($v0)
-    la  $a1,$LC7
-    la  $t9,fopen
-    jal $ra,$t9
-    move    $v1,$v0
-    lw  $v0,72($fp)
-    addu    $v0,$v0,4
-    sw  $v1,0($v0)
-$L57:
-    sb  $zero,40($fp)
-$L55:
-    lw  $v0,24($fp)
-    addu    $v0,$v0,1
+    sll $v0,$v0,1
     sw  $v0,24($fp)
-    b   $L43
-$L42:
+    lw  $a0,28($fp)
+    lw  $a1,24($fp)
+    la  $t9,realloc
+    jal $ra,$t9
+    sw  $v0,28($fp)
+$L111:
+    addu    $a1,$fp,36
+    lw  $v1,0($a1)
+    move    $a0,$v1
+    lw  $v0,28($fp)
+    addu    $a0,$a0,$v0
+    lbu $v0,32($fp)
+    sb  $v0,0($a0)
+    addu    $v1,$v1,1
+    sw  $v1,0($a1)
+    b   $L112
+$L110:
+    lw  $a0,28($fp)
+    lw  $a1,36($fp)
+    la  $t9,stdin_capicua
+    jal $ra,$t9
+    beq $v0,$zero,$L113
+    lw  $a0,64($fp)
+    la  $a1,$LC10
+    lw  $a2,28($fp)
+    la  $t9,fprintf
+    jal $ra,$t9
+    bgez    $v0,$L113
+    li  $v0,1           # 0x1
+    sw  $v0,40($fp)
+    b   $L106
+$L113:
+    lw  $a0,28($fp)
+    move    $a1,$zero
+    lw  $a2,24($fp)
+    la  $t9,memset
+    jal $ra,$t9
+    sw  $zero,36($fp)
+$L112:
+    la  $a0,__sF
+    la  $t9,fgetc
+    jal $ra,$t9
+    sb  $v0,32($fp)
+    b   $L107
+$L108:
+    sw  $zero,40($fp)
+$L106:
+    lw  $v0,40($fp)
     move    $sp,$fp
     lw  $ra,56($sp)
     lw  $fp,52($sp)
     addu    $sp,$sp,64
     j   $ra
-    .end    arg_parse
-    .size   arg_parse, .-arg_parse
+    .end    read_stdin
+    .size   read_stdin, .-read_stdin
     .data
     .align  2
-$LC8:
+$LC18:
     .word   __sF
     .word   __sF+88
     .text
@@ -916,9 +1845,9 @@ main:
     move    $fp,$sp
     sw  $a0,56($fp)
     sw  $a1,60($fp)
-    lw  $v0,$LC8
+    lw  $v0,$LC18
     sw  $v0,24($fp)
-    lw  $v0,$LC8+4
+    lw  $v0,$LC18+4
     sw  $v0,28($fp)
     sw  $zero,32($fp)
     addu    $v0,$fp,32
@@ -926,44 +1855,79 @@ main:
     lw  $a1,60($fp)
     addu    $a2,$fp,24
     move    $a3,$v0
-    la  $t9,arg_parse
+    la  $t9,argParse
     jal $ra,$t9
-    lw  $v0,32($fp)
-    beq $v0,$zero,$L60
-    sw  $zero,36($fp)
-    b   $L59
-$L60:
-    lw  $v0,24($fp)
-    beq $v0,$zero,$L62
-    lw  $v0,28($fp)
-    bne $v0,$zero,$L61
-$L62:
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L116
     li  $v0,1           # 0x1
     sw  $v0,36($fp)
-    b   $L59
-$L61:
+    b   $L115
+$L116:
+    lw  $v0,32($fp)
+    beq $v0,$zero,$L117
+    sw  $zero,36($fp)
+    b   $L115
+$L117:
     la  $t9,chargeSpace
     jal $ra,$t9
+    lw  $v1,24($fp)
+    la  $v0,__sF
+    bne $v1,$v0,$L118
+    lw  $a0,28($fp)
+    la  $t9,read_stdin
+    jal $ra,$t9
+    beq $v0,$zero,$L121
+    lw  $v1,28($fp)
+    la  $v0,__sF+88
+    beq $v1,$v0,$L120
+    lw  $a0,28($fp)
+    la  $t9,fclose
+    jal $ra,$t9
+$L120:
+    li  $v0,1           # 0x1
+    sw  $v0,36($fp)
+    b   $L115
+$L118:
     lw  $a0,24($fp)
     lw  $a1,28($fp)
     la  $t9,readFile
     jal $ra,$t9
+    move    $v1,$v0
+    li  $v0,1           # 0x1
+    bne $v1,$v0,$L122
+    li  $v0,1           # 0x1
+    sw  $v0,36($fp)
+    b   $L115
+$L122:
     lw  $v1,24($fp)
     la  $v0,__sF
-    beq $v1,$v0,$L63
+    beq $v1,$v0,$L123
     lw  $a0,24($fp)
     la  $t9,fclose
     jal $ra,$t9
-$L63:
+    move    $v1,$v0
+    li  $v0,-1          # 0xffffffffffffffff
+    bne $v1,$v0,$L123
+    li  $v0,1           # 0x1
+    sw  $v0,36($fp)
+    b   $L115
+$L123:
     lw  $v1,28($fp)
     la  $v0,__sF+88
-    beq $v1,$v0,$L64
+    beq $v1,$v0,$L121
     lw  $a0,28($fp)
     la  $t9,fclose
     jal $ra,$t9
-$L64:
+    move    $v1,$v0
+    li  $v0,-1          # 0xffffffffffffffff
+    bne $v1,$v0,$L121
+    li  $v0,1           # 0x1
+    sw  $v0,36($fp)
+    b   $L115
+$L121:
     sw  $zero,36($fp)
-$L59:
+$L115:
     lw  $v0,36($fp)
     move    $sp,$fp
     lw  $ra,48($sp)
@@ -979,5 +1943,3 @@ $L59:
     .ident  "GCC: (GNU) 3.3.3 (NetBSD nb3 20040520)"
 \end{lstlisting}
 \end{document}
-
-
